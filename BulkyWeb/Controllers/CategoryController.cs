@@ -24,9 +24,18 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            _dbContext.Categories.Add(obj);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (obj.Name.ToLower() == obj.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name", "The DisplayOrder cannot exactly math the Name.");
+            }
+            if (ModelState.IsValid)
+            {
+                _dbContext.Categories.Add(obj);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+          
         }
     }
 }
