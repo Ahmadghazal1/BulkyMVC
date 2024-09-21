@@ -3,11 +3,12 @@ using Bulky.DataAcess.Data;
 using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BulkyWeb.Controllers
+namespace BulkyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly IUnitOfWork  _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         public CategoryController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -41,7 +42,7 @@ namespace BulkyWeb.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id is null || id == 0)
+            if (id is null || id == 0)
             {
                 return NotFound();
             }
@@ -69,19 +70,19 @@ namespace BulkyWeb.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if(id is null || id == 0)
+            if (id is null || id == 0)
             {
                 return NotFound();
             }
 
             var categoryObj = _unitOfWork.Category.Get(x => x.Id == id);
-            if(categoryObj is null)
+            if (categoryObj is null)
             {
                 return NotFound();
             }
             return View(categoryObj);
         }
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
             var categoryObj = _unitOfWork.Category.Get(x => x.Id == id);
